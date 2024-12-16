@@ -1,0 +1,40 @@
+﻿@model Blogspot.Models.ViewModel.RegisterViewModel
+@{
+
+}
+
+<div class="container mx-auto">
+    <div class="row justify-content-center">
+        <div class="col-12 col-lg-6" style="margin-top:100px;box-shadow:3px 3px 0px 0px grey; border-radius:30px">
+
+            <h1 class=" mb-3 h3  border-bottom border-primary text-primary p-1">
+                Register
+            </h1>
+
+            <form method="post">
+                <div class="mb-3">
+                    <label class="form-label">Username</label>
+                    <input type="text" id="username" class="form-control" asp-for="Username" required/>
+                    <span class="text-danger" asp-validation-for="Username"></span>
+                </div>
+
+                <div class="mb-3">
+                    <label class="form-label">Email</label>
+                    <input type="text" id="email" class="form-control" asp-for="Email" required/>
+                    <span class="text-danger" asp-validation-for="Email"></span>
+                </div>
+
+                <div class="mb-3">
+                    <label class="form-label">Password</label>
+                    <input type="text" id="password" class="form-control" asp-for="Password" required minlength="6"/>
+                    <span class="text-danger" asp-validation-for="Password"></span>
+                </div>
+
+                <div class="mb-3 text-center">
+                    <button type="submit" class="btn btn-outline-primary p-1">Register</button>
+                </div>
+            </form>
+
+        </div>
+    </div>
+</div>

@@ -1,0 +1,45 @@
+﻿@model Blogspot.Models.ViewModel.EditComment
+
+@{
+}
+
+<div class="bg-secondary bg-opacity-10 py-2">
+    <div class="container">
+        <h3 class="text-primary fw-bold">Edit Comment</h3>
+    </div>
+</div>
+
+<div class="container py-5 col-12 col-lg-6">
+    @if (Model != null)
+    {
+        <form method="post">
+            <div class="mb-3">
+                <label class="form-label">Blogpost Id</label>
+                <input type="text" class="form-control" id="blogId" asp-for="BlogPostId" readonly />
+            </div>
+            <div class="mb-3">
+                <label class="form-label">Comment Id</label>
+                <input type="text" class="form-control" id="id" asp-for="CommentId" readonly />
+            </div>
+            <div class="mb-3">
+                <label class="form-label">Description</label>
+                <input type="text" class="form-control" id="description" asp-for="Description" maxlength="250" multiple/>
+                <span asp-validation-for="Description" class="text-danger" hidden>Content should be less than 250 words</span>
+            </div>
+            <div class="mb-3">
+                <label class="form-label">Date Added</label>
+                <input type="text" class="form-control" id="dateAdded" asp-for="DateAdded" />
+            </div>
+            <div class="mb-3">
+                <div class="d-flex">
+                    <button type="submit" class="btn btn-outline-success btn-sm">Update</button>
+                    <button type="submit" class="btn btn-outline-danger ms-2 btn-sm" asp-area="" asp-controller="Blogs" asp-action="Dalete" asp-route-id="@Model.CommentId">Delete</button>
+                </div>
+            </div>
+        </form>
+    }
+    else
+    {
+        <p>Not found!</p>
+    }
+</div>

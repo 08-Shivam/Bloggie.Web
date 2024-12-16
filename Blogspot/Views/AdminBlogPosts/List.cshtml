@@ -1,0 +1,142 @@
+﻿@model List<Blogspot.Models.Domain.BlogPost>
+
+@{
+    int nextPage = Convert.ToInt32(ViewBag.PageNumber) + 1;
+    int prevPage = Convert.ToInt32(ViewBag.PageNumber) - 1;
+}
+
+<div class="bg-secondary bg-opacity-10 py-2">
+    <div class="container">
+        <h1>Show All BlogPosts - Admin Functionality</h1>
+    </div>
+</div>
+
+<form method="get" asp-controller="AdminBlogPosts" asp-action="List">
+    <div class="container mt-3">
+        <div class="row">
+            <div class="col col-md-3 d-flex">
+                <input type="text" class="form-control border-warning" name="searchQuery" value="@ViewBag.SearchQuery" />
+                <button type="submit" class="btn btn-outline-warning ms-3 fw-bold btn-sm">Search</button>
+            </div>
+        </div>
+    </div>
+</form>
+
+<div class="container py-3">
+
+    @if (Model != null && Model.Any())
+    {
+        <table class="table table-responsive table-bordered table-hover table-striped">
+            <thead>
+                <tr class="text-center">
+                    <th class="w-30">Id</th>
+                    <th class="w-25">Heading
+                        <span>
+                            <span>
+                                <a class="btn btn-light btn-sm"
+                                   asp-controller="AdminBlogPosts"
+                                   asp-action="List"
+                                   asp-route-sortBy="Heading"
+                                   asp-route-sortDirection="Asc"
+                                   asp-route-searchQuery="@ViewBag.SearchQuery">
+                                    <i class="bi bi-arrow-up-short"></i>
+                                </a>
+                            </span>
+                            <span>
+                                <a class="btn btn-light btn-sm"
+                                   asp-controller="AdminBlogPosts"
+                                   asp-action="List"
+                                   asp-route-sortBy="Heading"
+                                   asp-route-sortDirection="Desc"
+                                   asp-route-searchQuery="@ViewBag.SearchQuery">
+                                    <i class="bi bi-arrow-down-short"></i>
+                                </a>
+                            </span>
+                        </span>
+                    </th>
+                    <th>Tags
+                        <span>
+                            <span>
+                                <a class="btn btn-light btn-sm"
+                                   asp-controller="AdminBlogPosts"
+                                   asp-action="List"
+                                   asp-route-sortBy="Tags"
+                                   asp-route-sortDirection="Asc"
+                                   asp-route-searchQuery="@ViewBag.SearchQuery">
+                                    <i class="bi bi-arrow-up-short"></i>
+                                </a>
+                            </span>
+                            <span>
+                                <a class="btn btn-light btn-sm"
+                                   asp-controller="AdminBlogPosts"
+                                   asp-action="List"
+                                   asp-route-sortBy="Tags"
+                                   asp-route-sortDirection="Desc"
+                                   asp-route-searchQuery="@ViewBag.SearchQuery">
+                                    <i class="bi bi-arrow-down-short"></i>
+                                </a>
+                            </span>
+                        </span>
+                    </th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var blogPost in Model)
+                {
+                    <tr>
+                        <td>@blogPost.Id</td>
+                        <td>@blogPost.Heading</td>
+                        <td>
+                            <div class="d-flex">
+                                @foreach (var tag in blogPost.Tags)
+                                {
+                                    <span class="badge bg-secondary m-1">@tag.Name</span>
+                                }
+                            </div>
+                        </td>
+                        <td class="text-center justify-content-center align-content-center">
+                            <a asp-area="" asp-controller="AdminBlogPosts" asp-action="Edit" asp-route-id="@blogPost.Id" class="btn btn-outline-info btn-sm"><i class="bi bi-pencil-square"></i></a>
+                            <a asp-area="" asp-controller="AdminBlogPosts" asp-action="Add" asp-route-id="@blogPost.Id" class="btn btn-outline-primary btn-sm"><i class="bi bi-plus-square "></i></a>
+                            <a asp-area="" asp-controller="AdminBlogPosts" asp-action="Edit" class="btn btn-outline-danger btn-sm"><i class="bi bi-trash3-fill "></i></a>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+        <div class="d-flex justify-content-center ">
+            <nav aria-label="Page navigation example">
+                <ul class="pagination">
+                    <li class="page-item">
+                        <a class="page-link" asp-action="List"
+                           asp-route-pageNumber="@prevPage"
+                           asp-route-pageSize="@ViewBag.PageSize"
+                           asp-route-sortBy="@ViewBag.SortBy"
+                           asp-route-sortDirection="@ViewBag.SortDirection">Previous</a>
+                    </li>
+                    @for (int i = 1; i <= ViewBag.TotalPages; i++)
+                    {
+                        <li class="page-item">
+                            <a class="page-link" asp-controller="AdminBlogPosts"
+                               asp-action="List"
+                               asp-route-pageNumber="@i"
+                               asp-route-pageSize="@ViewBag.PageSize">@i</a>
+                        </li>
+                    }
+                    <li class="page-item">
+                        <a class="page-link" asp-action="List"
+                           asp-route-pageNumber="@nextPage"
+                           asp-route-pageSize="@ViewBag.PageSize"
+                           asp-route-sortBy="@ViewBag.SortBy"
+                           asp-route-sortDirection="@ViewBag.SortDirection">Next</a>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+    }
+    else
+    {
+        <h3>No blogs found!</h3>
+    }
+
+</div>

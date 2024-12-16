@@ -1,0 +1,92 @@
+﻿@model Blogspot.Models.ViewModel.HomeViewModel
+@using Microsoft.AspNetCore.Identity
+@inject SignInManager<IdentityUser> signInManager
+@inject UserManager<IdentityUser> userManager
+
+@{
+    ViewData["Title"] = "Home Page";
+}
+
+@* //Hero section *@
+
+<div class="container col-xxl-8 px-4 py-5">
+    <div class="row align-items-center g-5 mt-5" style=" border-radius:40px;box-shadow:3px 3px 3px 3px grey">
+        <div class="col-12 col-lg-6">
+            <h3 class="fs-1 fw-bold lh-1 mb-3 text-primary ">
+                Bloggie.Web - The Tech Blogs
+            </h3>
+            <p class="lead text-muted fw-light">
+                Bloggie is the game to coding blogs covering a vast range of topics like HTML, CSS, JavaScript, ASP.NET, C# & tech related blogs etc.<br />
+                Want to read the latest skill relevant articles?
+            </p>
+            @if (!signInManager.IsSignedIn(User))
+            {
+                <p class="fw-normal text-primary">
+                    Join the Bloggie.Web app by <span> <a class="text-muted" asp-area="" asp-controller="Account" asp-action="Register">Register</a></span> yourself.
+                </p>
+            }
+           
+        </div>
+
+        <div class="col-12 col-lg-6">
+            <img src="https://images.pexels.com/photos/326503/pexels-photo-326503.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1"
+                 alt="Bloggie - Dev Blogs" class="d-block mx-lg-auto img-fluid" width="300" />
+        </div>
+    </div>
+</div>
+
+@* Tags *@
+<div class="container row" >
+    <div class="col-3"></div>
+    <div class="row col-8 d-flex text-center p-2" >
+        <div>
+            @if (Model != null && Model.Tags.Any())
+            {
+                @foreach (var tags in Model.Tags)
+                {
+                    <span class="badge me-1 bg-primary">
+                        @tags.Name
+                    </span>
+                }
+            }
+        </div>
+    </div>
+</div>
+
+@* Blogs Content *@
+<div class="container">
+    <div class="row justify-content-center">
+        <div class="col-8 overflow-hidden p-4">
+            @if (Model != null && Model.BlogPosts.Any())
+            {
+                @foreach (var blogPost in Model.BlogPosts)
+                {
+                    <div class="mb-5 p-4 box-shadow" style="border-radius:30px; box-shadow:3px 3px 3px 3px grey;">
+                        <img class="mb-2 d-block img-fluid" src="@blogPost.FeaturedImageUrl" alt="@blogPost.Heading" />
+                        <h6 class="mb-4">
+                            @blogPost.Heading
+                        </h6>
+                        <p class="mb-4">
+                            Author:  @blogPost.Author <br />
+                            Published Date: @blogPost.PublishedDate.ToShortDateString()
+                        </p>
+                        <p class="mb-4">
+                            @foreach (var tags in blogPost.Tags)
+                            {
+                                <span class="badge bg-secondary me-1">@tags.Name</span>
+                            }
+                        </p>
+                        <p class="mb-4">
+                            @blogPost.ShortDescription
+                        </p>
+                        <a class=" btn btn-outline-dark fw-bold btn-sm" asp-area="" asp-controller="Blogs" asp-action="Index" asp-route-urlHandle="@blogPost.UrlHandle">Read More</a>
+                    </div>
+                }
+            }
+            else
+            {
+                <h3>No Blogs found</h3>
+            }
+        </div>
+    </div>
+</div>
